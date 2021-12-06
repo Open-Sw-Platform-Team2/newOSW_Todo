@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-
-// npm install react-native-calendars ( https://github.com/wix/react-native-calendars )
-import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
-
-// npm install react-native-vector-icons ( https://github.com/oblador/react-native-vector-icons )
 import Icon from 'react-native-vector-icons/AntDesign'
+
+/* npm install react-native-calendars */
+/* https://github.com/wix/react-native-calendars */
+import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
 
 LocaleConfig.locales['en'] = {
   monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -21,7 +20,7 @@ export default function ProgressScreen() {
   return (
     <View style={{ flex: 1 }}>
 
-      <Text>통계 면 이네</Text>
+      <Text>통계 화면 수정중...</Text>
 
       <Calendar
         // 현재 날짜, Default = Date()
@@ -72,50 +71,50 @@ export default function ProgressScreen() {
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={false}
 
-          markingType={'custom'}
-          markedDates={{
-          '2021-12-01': {selected: true, selectedColor: 'orange'},
-          '2021-12-02': {selected: true, selectedColor: 'red'},
-          '2021-12-08': { customStyles: { container: { backgroundColor: 'black' },
-            text: { color: 'yellow', fontWeight: 'bold' } } },
-          '2021-12-09': { customStyles: { container: { backgroundColor: 'green', elevation: 10 },
-            text: { color: 'yellow' } } }
+        markingType={'custom'}
+        markedDates={{
+        '2021-12-01': {selected: true, selectedColor: 'orange'},
+        '2021-12-02': {selected: true, selectedColor: 'red'},
+        '2021-12-08': { customStyles: { container: { backgroundColor: 'black' },
+        text: { color: 'yellow', fontWeight: 'bold' } } },
+        '2021-12-09': { customStyles: { container: { backgroundColor: 'green', elevation: 10 },
+        text: { color: 'yellow' } } }
+        }}
+
+        // Specify style for calendar container element. Default = {}
+        style={{
+        borderWidth: 1,
+        borderColor: 'blue',
+        height: 350
+        }}
+
+        // Specify theme properties to override specific styles for calendar parts. Default = {}
+        theme={{
+            backgroundColor: '#ffffff',
+            calendarBackground: '#ffffff',
+            textSectionTitleColor: '#b6c1cd',
+            textSectionTitleDisabledColor: '#d9e1e8',
+            selectedDayBackgroundColor: '#00adf5',
+            selectedDayTextColor: '#ffffff',
+            todayTextColor: '#00adf5',
+            dayTextColor: '#2d4150',
+            textDisabledColor: '#d9e1e8',
+            dotColor: '#00adf5',
+            selectedDotColor: '#ffffff',
+            arrowColor: 'orange',
+            disabledArrowColor: '#d9e1e8',
+            monthTextColor: 'red',
+            indicatorColor: 'blue',
+            textDayFontFamily: 'monospace',
+            textMonthFontFamily: 'monospace',
+            textDayHeaderFontFamily: 'monospace',
+            textDayFontWeight: '300',
+            textMonthFontWeight: 'bold',
+            textDayHeaderFontWeight: '300',
+            textDayFontSize: 16,
+            textMonthFontSize: 16,
+            textDayHeaderFontSize: 16
             }}
-
-              // Specify style for calendar container element. Default = {}
-              style={{
-                borderWidth: 1,
-                borderColor: 'blue',
-                height: 350
-              }}
-
-              // Specify theme properties to override specific styles for calendar parts. Default = {}
-theme={{
-                backgroundColor: '#ffffff',
-                calendarBackground: '#ffffff',
-                textSectionTitleColor: '#b6c1cd',
-                textSectionTitleDisabledColor: '#d9e1e8',
-                selectedDayBackgroundColor: '#00adf5',
-                selectedDayTextColor: '#ffffff',
-                todayTextColor: '#00adf5',
-                dayTextColor: '#2d4150',
-                textDisabledColor: '#d9e1e8',
-                dotColor: '#00adf5',
-                selectedDotColor: '#ffffff',
-                arrowColor: 'orange',
-                disabledArrowColor: '#d9e1e8',
-                monthTextColor: 'red',
-                indicatorColor: 'blue',
-                textDayFontFamily: 'monospace',
-                textMonthFontFamily: 'monospace',
-                textDayHeaderFontFamily: 'monospace',
-                textDayFontWeight: '300',
-                textMonthFontWeight: 'bold',
-                textDayHeaderFontWeight: '300',
-                textDayFontSize: 16,
-                textMonthFontSize: 16,
-                textDayHeaderFontSize: 16
-              }}
             />
     </View>
   );

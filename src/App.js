@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
+/* npm install react-native-vector-icons (옵션 변경은 링크 참조) */
+/* https://github.com/oblador/react-native-vector-icons */
+/* https://materialdesignicons.com */
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/* npm install @react-navigation/bottom-tabs (옵션 변경은 링크 참조) */
+/* https://reactnavigation.org/docs/bottom-tab-navigator */
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
     import HomeScreen from './screens/HomeScreen';
@@ -8,28 +15,46 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
     import ProgressScreen from './screens/ProgressScreen';
     import MyPageScreen from './screens/MyPageScreen';
 
-// npm install @react-navigation/bottom-tabs 추가 설치 완료
-// 하단 메뉴 옵션 변경시 참고
-// https://reactnavigation.org/docs/bottom-tab-navigator/
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen}
-        options={{ headerShown: false }} />
+      <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{ tabBarActiveTintColor: '#e91e63', }}
+      >
 
-        <Tab.Screen name="Calendar" component={CalendarScreen}
-        options={{ headerShown: false }}/>
+      <Tab.Screen name="Home" component={ HomeScreen }
+      options={{ tabBarLabel: 'Home',
+      tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="format-list-checks" color={color} size={size} /> ),
+      headerShown: false }}
+      />
 
-        <Tab.Screen name="Progress" component={ProgressScreen}
-        options={{ headerShown: false }}/>
+      <Tab.Screen name="Calendar" component={ CalendarScreen }
+      options={{ tabBarLabel: 'Calendar',
+      tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="calendar-month-outline" color={color} size={size} /> ),
+      headerShown: false }}
+      />
 
-        <Tab.Screen name="MyPage" component={MyPageScreen}
-        options={{ headerShown: false }}/>
+      <Tab.Screen name="Progress" component={ ProgressScreen }
+      options={{ tabBarLabel: 'Progress',
+      tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="chart-donut" color={color} size={size} /> ),
+      headerShown: false }}
+      />
+
+      <Tab.Screen name="MyPage" component={ MyPageScreen }
+      options={{ tabBarLabel: 'MyPage',
+      tabBarIcon: ({ color, size }) => (
+      <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} /> ),
+      tabBarBadge: 2,
+      headerShown: false }}
+      />
+
       </Tab.Navigator>
-    </NavigationContainer>
-  );
-}
+      </NavigationContainer>
+      );
+      }
