@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView } from 'react-native';
-import { ViewStyles, textStyles } from '../styles';
+//import { ViewStyles, textStyles, barStyles } from '../styles';
 import Input from '../components/Input';
 import { images } from '../Images';
 import IconButton from '../components/IconButton';
 import Task from '../components/Task'
+import styled, { ThemeProvider } from 'styled-components';
+import { theme } from '../theme';
 
 export default function HomeScreen() {
 
     const width = Dimensions.get('window').width;
+
     const [newTask, setNewTask] = useState('');
 
     const [tasks, setTasks] = useState({
@@ -52,19 +55,43 @@ export default function HomeScreen() {
         setNewTask(text);
     };
 
+    //스타일 적용
+    const Container = styled.SafeAreaView`
+        flex: 1;
+        align-items: center;
+        justify-content: flex-start;
+        background-color: ${({theme}) => theme.background};
+    `;
+
+    const Title = styled.Text`
+        font-size: 40px;
+        font-weight: 600;
+        color: ${({theme}) => theme.main};
+        align-self: flex-start;
+        margin: 0px auto 0px;
+    `;
+
+    const List = styled.ScrollView`
+        flex: 1;
+        width: ${({width}) => width - 20}px;
+    `;
+
     return (
-        <SafeAreaView style={ViewStyles.container}>
-            <StatusBar barStyle="light-content" style={textStyles.StatusBar}/>
-            <Text style={textStyles.title}>날짜  표시예정</Text>
-            <Input value={newTask} onChangeText={_handleTextChange}
-            onSubmitEditing={_addTask} onBlur={_onBlur} />
-                <ScrollView width = {width-20}>
-                    {Object.values(tasks).reverse().map(item => (
-                        <Task key={item.id} item={item} deleteTask={_deleteTask}
-                        toggleTask={_toggleTask} updateTask={_updateTask} />
-                    ))}
-                </ScrollView>
-        </SafeAreaView>
+        <ThemeProvider theme={theme}>
+            <Container>
+                <StatusBar barStyle="light-content" style={theme.background}/>
+                <Title>DATE</Title>
+                <Input placeholder="+ Add a task" value={newTask} onChangeText={_handleTextChange}
+                onSubmitEditing={_addTask} onBlur={_onBlur} />
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item => (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        ))}
+                    </List>
+            </Container>
+        </ThemeProvider>
+  
     );
 };
 

@@ -5,18 +5,19 @@ import PropTypes from 'prop-types';
 import IconButton from './IconButton';
 import { images } from '../Images';
 import Input from './Input';
+import styled from 'styled-components';
 
 const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
+
     const _handleUpdateButtonPress = () => {
         setIsEditing(true);
     };
 
-
     const _onSubmitEditing = () => {
         if (isEditing) {
-            const editedTask = Object.assign({}. item, {text});
+            const editedTask = Object.assign({}, item, {text});
             setIsEditing(false);
             updateTask(editedTask);
         }
@@ -34,44 +35,38 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
         onSubmitEditing={_onSubmitEditing}
         onBlur={_onBlur} />
     ) : (
-        <View style={taskStyle.container}>
+        <Container>
             <IconButton type={item.completed ? images.completed : images.uncompleted}
             id = {item.id} onPressOut={toggleTask} />
-            <Text style={[taskStyle.contents,
-                {color: (item.completed ? theme.done : theme.text)},
-                {textDecorationLine: (item.completed ? 'line-through' : 'none')}]}>
-                    {item.text}
-            </Text>
-            {item.completed || <IconButton type={images.update}
-            onPressOut={_handleUpdateButtonPress} />}
+            <Contents completed={item.completed}>{item.text}</Contents>
+            {item.completed || (<IconButton type={images.update}
+            onPressOut={_handleUpdateButtonPress} />)}
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
             completed={item.completed} />
-        </View>
+        </Container>
     );
 };
+const Container = styled.View`
+    flex-direction: row;
+    align-items: center;
+    background-color: ${({theme}) => theme.itemBackground};
+    border-radius: 10px;
+    padding: 5px;
+    margin: 3px 0px;
+`;
 
-const taskStyle = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems:'center',
-        backgroundColor: theme.itemBackground,
-        borderRadius: 10,
-        padding: 5,
-        marginTop: 3,
-        marginLeft: 0,
-    },
-
-    contents: {
-        flex: 1,
-        fontSize: 24,
-        color: theme.text,
-    },
-});
+const Contents = styled.Text`
+    flex: 1;
+    font-size: 24px;
+    color: ${({theme, completed}) => (completed? theme.done : theme.text)};
+    text-decoration-line: ${({completed})=>completed? 'line-through' : 'none'};
+`;
 
 Task.propTypes = {
     item: PropTypes.object.isRequired,
     deleteTask: PropTypes.func.isRequired,
     toggleTask: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired,
 }
 
 export default Task;
