@@ -13,12 +13,21 @@ import { images } from '../Images';
 import IconButton from '../components/IconButton';
 import Task from '../components/Task'
 import styled, { ThemeProvider } from 'styled-components';
-import { theme } from '../theme';
+
+import { lightTheme, darkTheme } from '../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import moment from 'moment';
+import AccordianExample from '../AccordianFolder';
+import { useSelector, useDispatch } from 'react-redux';
+import { switchTheme } from '../redux/themeAction';
+
+
 
 export default function HomeScreen() {
+
+    const theme = useSelector((state) => state.themeReducer.theme);
+    const dispatch = useDispatch();
 
     const width = Dimensions.get('window').width;
     
@@ -107,12 +116,33 @@ export default function HomeScreen() {
         flex: 1;
         width: ${({width}) => width - 20}px;
     `;
+    const Button = styled.TouchableOpacity`
+        margin: 32px 0;
+        background-color: ${({theme}) => theme.itemBackground};
+        padding: 16px 32px;
+        border-radius: 6px;
+    `;
 
+    const ButtonText = styled.Text`
+        font-size: 15px;
+        font-weight: 600;
+        color: ${({theme}) => theme.main};
+    `
     return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
-                <StatusBar barStyle="light-content" style={theme.background}/>
+                <StatusBar barStyle={theme.statusBarStyle} style={theme.background}/>
                 <Title>{currentDate}</Title>
+                {theme.mode === "light"? (
+                    <Button onPress={() => dispatch(switchTheme(darkTheme))}>
+                        <ButtonText>Change to Dark Theme</ButtonText>
+                    </Button>
+                ) : (
+                    <Button onPress={() => dispatch(switchTheme(lightTheme))}>
+                        <ButtonText>Change to Light Theme</ButtonText>
+                    </Button>
+                )}
+
                 <Input placeholder="+ Add a task" value={newTask} onChangeText={_handleTextChange}
                 onSubmitEditing={_addTask} onBlur={_onBlur} />
                     <List width={width}>
@@ -131,14 +161,3 @@ export default function HomeScreen() {
     );
 };
 
-//현재날짜표시 나중에  clock.js로 분리하기
-const todayTitle = () => {
-    let now = new Date();
-    let todayYear = now.getFullYear();
-    let todayMonth = now.getMonth() + 1;
-    let todayDate = now.getDate();
-    const week = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    let DayOfWeek = week[now.getDay()];
-
-    return todayYear + '.' + todayMonth + '.' + todayDate;
-};

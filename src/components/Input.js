@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components/native'
 import { StyleSheet, TextInput } from "react-native";
-import { theme } from '../theme';
+import { lightTheme, darkTheme, theme } from '../theme';
 import { Dimensions } from "react-native";
 import PropTypes from "prop-types";
 
@@ -12,7 +12,7 @@ const StyledInput = styled.TextInput.attrs(({theme})=>({placeholderTextColor: th
     margin: 3px 0;
     padding: 15px 20px;
     border-radius: 10px;
-    background-color: ${({theme}) => theme.background};
+    background-color: ${({theme}) => theme.itemBackground};
     font-size: 25px;
     color: ${({theme}) => theme.text};
 `;
@@ -24,7 +24,6 @@ const Input = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) =>
         <StyledInput
             width={width}
             placeholder={placeholder}
-            placeholderTextColor = {theme.main}
             maxLength={50}
             autoCapitalize="none"
             autoCorrect={false}

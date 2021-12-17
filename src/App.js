@@ -4,6 +4,7 @@ import {AppLoading} from 'expo';
 import {Asset} from 'expo-asset';
 import * as Font from 'expo-font';
 import {ThemeProvider} from "styled-components/native";
+
 // import {theme} from './native';
 
 /* npm install react-native-vector-icons (옵션 변경은 링크 참조) */
@@ -25,6 +26,13 @@ import MyPageScreen from './screens/MyPageScreen';
 import Navigation from './navigations';
 
 import {useState} from "react";
+
+//테마 관련 import
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import themeReducer from './redux/themeReducer';
+//테마 관련 import
 
 const Tab = createBottomTabNavigator();
 //----로딩화면---- splash, icon.png
@@ -70,15 +78,24 @@ const Tab = createBottomTabNavigator();
 
 
 
+const ThemedHomeScreen = () => {
+  const store = createStore(combineReducers({ themeReducer }), applyMiddleware(thunk));
+  return(
+    <Provider store={store}><HomeScreen/></Provider>
+  )
+
+};
+
 export default function App() {
   return (
+   
     <NavigationContainer>
       <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{ tabBarActiveTintColor: '#e91e63', }}
       >
-
-      <Tab.Screen name="Home" component={ HomeScreen }
+      
+      <Tab.Screen name="Home" component={ ThemedHomeScreen }
       options={{ tabBarLabel: 'Home',
       tabBarIcon: ({ color, size }) => (
       <MaterialCommunityIcons name="format-list-checks" color={color} size={size} /> ),
@@ -109,5 +126,6 @@ export default function App() {
 
       </Tab.Navigator>
       </NavigationContainer>
+      
       );
       }
