@@ -6,7 +6,7 @@
 styled-components를 이용한 스타일링이 활용도가 높다고 생각합니다! */
 
 import React, {useState, useEffect} from 'react';
-import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView } from 'react-native';
+import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView, Alert } from 'react-native';
 //import { ViewStyles, textStyles, barStyles } from '../styles';
 import Input from '../components/Input';
 import { images } from '../Images';
@@ -21,7 +21,7 @@ import moment from 'moment';
 import AccordianExample from '../AccordianFolder';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchTheme } from '../redux/themeAction';
-
+import ThemeChangeButton from '../components/themeChangeButton';
 
 
 export default function HomeScreen() {
@@ -76,6 +76,15 @@ export default function HomeScreen() {
         _saveTasks(currentTasks);
     }
 
+    const _clearAllTask = () => {
+        Alert.alert("Confirm", "Clear tasks?",[
+            {
+            text: "Yes",
+            onPress: () => setTasks([]),
+            }, { text: "No"},
+        ]);
+    };
+
     const _toggleTask = id => {
         const currentTasks = Object.assign({}, tasks);
         currentTasks[id]['completed'] = !currentTasks[id]['completed'];
@@ -104,6 +113,15 @@ export default function HomeScreen() {
         background-color: ${({theme}) => theme.background};
     `;
 
+    const ButtonContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    background-color: ${({theme}) => theme.itemBackground};
+    border-radius: 10px;
+    padding: 5px;
+    margin: 3px 0px;
+`;
+
     const Title = styled.Text`
         font-size: 40px;
         font-weight: 600;
@@ -117,10 +135,10 @@ export default function HomeScreen() {
         width: ${({width}) => width - 20}px;
     `;
     const Button = styled.TouchableOpacity`
-        margin: 32px 0;
-        background-color: ${({theme}) => theme.itemBackground};
-        padding: 16px 32px;
-        border-radius: 6px;
+        margin: 0px 0;
+        background-color: ${({theme}) => theme.background};
+        padding: 10px 10px;
+        border-radius: 10px;
     `;
 
     const ButtonText = styled.Text`
@@ -133,18 +151,17 @@ export default function HomeScreen() {
             <Container>
                 <StatusBar barStyle={theme.statusBarStyle} style={theme.background}/>
                 <Title>{currentDate}</Title>
-                {theme.mode === "light"? (
-                    <Button onPress={() => dispatch(switchTheme(darkTheme))}>
-                        <ButtonText>Change to Dark Theme</ButtonText>
-                    </Button>
-                ) : (
-                    <Button onPress={() => dispatch(switchTheme(lightTheme))}>
-                        <ButtonText>Change to Light Theme</ButtonText>
-                    </Button>
-                )}
-
+                <ButtonContainer>
                 <Input placeholder="+ Add a task" value={newTask} onChangeText={_handleTextChange}
                 onSubmitEditing={_addTask} onBlur={_onBlur} />
+                {theme.mode === "light"? (
+                    <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(darkTheme))}/>
+                ) : (
+                    <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(lightTheme))}/>
+                )}
+                <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
+                </ButtonContainer>
+                
                     <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}

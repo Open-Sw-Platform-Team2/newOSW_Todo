@@ -16,9 +16,9 @@ const StyledInput = styled.TextInput.attrs(({theme})=>({placeholderTextColor: th
     font-size: 25px;
     color: ${({theme}) => theme.text};
 `;
-
+//
 const Input = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) => {
-    const width = Dimensions.get('window').width;
+    const width = Dimensions.get('window').width-100;
     
     return (
         <StyledInput
@@ -36,7 +36,7 @@ const Input = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) =>
         </StyledInput>
     );
 };
-
+//
 Input.propTypes = {
     placeholder: PropTypes.string,
     value: PropTypes.string.isRequired,
