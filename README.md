@@ -18,7 +18,7 @@ Todo list application 개발
 
 ## Intermidiate
 - [ ] 투두 순서 바꾸기 (꾹 누르면 바꿀 수 있게) Change the order of to-do items
-- [ ] 완료/미완료 아이템만 보여주기 (필터링) Show only the complete/incomplete to-do items (filtering)
+- [x] 완료/미완료 아이템만 보여주기 (필터링) Show only the complete/incomplete to-do items (filtering)
 - [ ] 그루핑기능 (할일끼리 카테고리 설정) Allow users to set a category for each to-do item (grouping)
 - [ ] 키워드로 아이템찾기 (검색) Search for specific to-do items with a keyword
 - [ ] 추가/완료일 기준 sort (All) Sort to-do items in terms of the added date, due date across categories
