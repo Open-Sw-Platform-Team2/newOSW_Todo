@@ -73,7 +73,7 @@ const Item = ({ title }) => (
     </Text>
     <Progress.Bar
         borderColor='#00a87e'
-        color='00a87e'
+        color='#00a87e'
         //height={ 10 }
         progress={ 0.3 }
         width={ null }
@@ -91,8 +91,6 @@ export default function ProgressScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-
-      <Text>타이틀 위치 ..?</Text>
 
       <Calendar
         // 현재 날짜, Default = Date()
