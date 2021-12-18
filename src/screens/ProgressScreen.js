@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, FlatList, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign'
+
+/* npm install react-native-progress --save */
+/* https://github.com/oblador/react-native-progress */
+import * as Progress from 'react-native-progress';
 
 /* npm install react-native-calendars */
 /* https://github.com/wix/react-native-calendars */
 import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
 
+/* 달력 정보 */
 LocaleConfig.locales['en'] = {
   monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
   monthNamesShort: ['Jan.','Feb.','Mar','Apr','May','Jun','Jul.','Aug','Sep','Oct','Nov','Dec'],
@@ -16,11 +21,69 @@ LocaleConfig.locales['en'] = {
 
 LocaleConfig.defaultLocale = 'en';
 
+/* 달력 하단 (프로그레스) 목록 스타일 */
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'skyblue',
+        },
+
+    item: {
+        padding: 20,
+        marginVertical: 10,
+        marginHorizontal: 20,
+        //height: 100,
+        //justifyContent: 'center',
+        //alignItems: 'center',
+        backgroundColor: '#f9c2ff',
+        borderWidth: 1,
+        //borderStyle: 'dashed',
+        borderColor: 'red',
+        },
+
+    title: {
+        color: 'blue',
+        //fontWeight: 'bold',
+        fontSize: 30,
+        },
+    });
+
+/* 목록 데이터 */
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'First Item',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Second Item',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Third Item',
+  },
+  {
+    id: '234234234',
+    title: '4 Item',
+  },
+];
+
+const Item = ({ title }) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+    <Progress.Bar progress={0.3} width={200} />
+  </View>
+);
+
 export default function ProgressScreen() {
+    const renderItem = ({ item }) => (
+        <Item title={item.title} />
+        );
+
   return (
     <View style={{ flex: 1 }}>
 
-      <Text>통계 화면 수정중...</Text>
+      <Text>타이틀 위치 ..?</Text>
 
       <Calendar
         // 현재 날짜, Default = Date()
@@ -116,6 +179,23 @@ export default function ProgressScreen() {
             textDayHeaderFontSize: 16
             }}
             />
+
+    <View style={styles.container}>
+        <Text style={{
+        textAlign: 'center',
+        fontSize: 30,
+        color: 'yellow',
+        }}>
+        completion rate
+        </Text>
+
+        <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            />
+        </View>
+
     </View>
   );
 }
