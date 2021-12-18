@@ -25,53 +25,62 @@ LocaleConfig.defaultLocale = 'en';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'skyblue',
+        backgroundColor: '#E3F7F2',
         },
 
     item: {
-        padding: 20,
+        paddingHorizontal: 25,
+        paddingVertical: 15,
         marginVertical: 10,
         marginHorizontal: 20,
-        //height: 100,
-        //justifyContent: 'center',
+        height: 125,
+        justifyContent: 'space-around',
         //alignItems: 'center',
-        backgroundColor: '#f9c2ff',
-        borderWidth: 1,
+        backgroundColor: 'white',
+        borderRadius: 25,
+        //borderWidth: 1,
         //borderStyle: 'dashed',
-        borderColor: 'red',
+        //borderColor: 'red',
         },
 
     title: {
-        color: 'blue',
-        //fontWeight: 'bold',
-        fontSize: 30,
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 25,
         },
     });
 
 /* 목록 데이터 */
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    id: '1',
+    title: 'Study',
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    id: '2',
+    title: 'React',
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: '234234234',
-    title: '4 Item',
+    id: '3',
+    title: 'Native Item',
   },
 ];
 
 const Item = ({ title }) => (
   <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-    <Progress.Bar progress={0.3} width={200} />
+    <Text style={styles.title}>
+    { title }
+    </Text>
+    <Progress.Bar
+        borderColor='#00a87e'
+        color='00a87e'
+        //height={ 10 }
+        progress={ 0.3 }
+        width={ null }
+        />
+    <Text style={{ textAlign: 'right' }}>
+    3 / 10 or 30%
+    </Text>
   </View>
 );
 
@@ -136,19 +145,27 @@ export default function ProgressScreen() {
 
         markingType={'custom'}
         markedDates={{
-        '2021-12-01': {selected: true, selectedColor: 'orange'},
-        '2021-12-02': {selected: true, selectedColor: 'red'},
-        '2021-12-08': { customStyles: { container: { backgroundColor: 'black' },
-        text: { color: 'yellow', fontWeight: 'bold' } } },
-        '2021-12-09': { customStyles: { container: { backgroundColor: 'green', elevation: 10 },
-        text: { color: 'yellow' } } }
+        '2021-12-07': { customStyles: {
+                                  container: { backgroundColor: 'red' },
+                                  text: { color: 'white', fontWeight: 'bold' }
+                                  }},
+
+        '2021-12-08': { customStyles: {
+                                  container: { backgroundColor: 'orange' },
+                                  text: { color: 'white', fontWeight: 'bold' }
+                                  }},
+
+        '2021-12-09': { customStyles: {
+            container: { backgroundColor: 'green' },
+            text: { color: 'white', fontWeight: 'bold' }
+            }},
         }}
 
         // Specify style for calendar container element. Default = {}
         style={{
-        borderWidth: 1,
-        borderColor: 'blue',
-        height: 350
+        //borderWidth: 1,
+        //borderColor: 'blue',
+        height: 330
         }}
 
         // Specify theme properties to override specific styles for calendar parts. Default = {}
@@ -159,34 +176,56 @@ export default function ProgressScreen() {
             textSectionTitleDisabledColor: '#d9e1e8',
             selectedDayBackgroundColor: '#00adf5',
             selectedDayTextColor: '#ffffff',
-            todayTextColor: '#00adf5',
+
+            todayTextColor: '#008563',
+
             dayTextColor: '#2d4150',
             textDisabledColor: '#d9e1e8',
-            dotColor: '#00adf5',
-            selectedDotColor: '#ffffff',
-            arrowColor: 'orange',
+            //dotColor: '#00adf5',
+            //selectedDotColor: '#ffffff',
+
+            arrowColor: 'green',
+
             disabledArrowColor: '#d9e1e8',
-            monthTextColor: 'red',
+            monthTextColor: 'green',
             indicatorColor: 'blue',
-            textDayFontFamily: 'monospace',
-            textMonthFontFamily: 'monospace',
-            textDayHeaderFontFamily: 'monospace',
+            textDayFontFamily: 'sans-serif',
+            textMonthFontFamily: 'sans-serif',
+            textDayHeaderFontFamily: 'sans-serif',
             textDayFontWeight: '300',
             textMonthFontWeight: 'bold',
             textDayHeaderFontWeight: '300',
+
             textDayFontSize: 16,
-            textMonthFontSize: 16,
+            textMonthFontSize: 22,
             textDayHeaderFontSize: 16
+
+/*
+            'stylesheet.calendar.header': {
+            dayTextAtIndex0: { color: '#d52712' },
+            dayTextAtIndex1: { color: 'black' },
+          dayTextAtIndex2: { color: 'black' },
+            dayTextAtIndex3: { color: 'black' },
+            dayTextAtIndex4: { color: 'black' },
+            dayTextAtIndex5: { color: 'black' },
+           dayTextAtIndex6: { color: '#0f59e6' },
+         }*/
+
+
             }}
             />
 
+
     <View style={styles.container}>
         <Text style={{
+        padding: 15,
         textAlign: 'center',
-        fontSize: 30,
-        color: 'yellow',
+        fontSize: 25,
+        fontWeight: 'bold',
+        //fontFamily: 'sans-serif',
+        color: '#008563',
         }}>
-        completion rate
+        Completion Rate
         </Text>
 
         <FlatList
