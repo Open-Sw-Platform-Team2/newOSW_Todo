@@ -1,4 +1,11 @@
 /*SoyeunMin, add Duedate*/
+
+/*
+npm install @react-native-async-storage/async-storage
+npm install moment
+npm install react-native-calendar-picker
+*/
+
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
