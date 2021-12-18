@@ -12,7 +12,7 @@ Todo list application 개발
 - [x] Show all added to-do items
 - [x] to-do 완료/미완료 표시 Check/uncheck a to-do item to mark completion
 - [ ] 모든/특정한 to-do 선택/선택해제 Select/deselect specific/all to-do items
-- [ ] 모든/특정한 to-do 삭제 Delete specific/all to-do items
+- [x] 모든/특정한 to-do 삭제 Delete specific/all to-do items
 - [x] [Special] Dark mode
 - [ ] [Special] Login, mypage
 
