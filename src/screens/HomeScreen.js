@@ -11,14 +11,13 @@ import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView, Alert } fr
 import Input from '../components/Input';
 import { images } from '../Images';
 import IconButton from '../components/IconButton';
-import Task from '../components/Task'
+import Task from '../components/Task';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { lightTheme, darkTheme } from '../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import moment from 'moment';
-import AccordianExample from '../AccordianFolder';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
@@ -26,9 +25,15 @@ import Modal from 'react-native-modal';
 
 
 export default function HomeScreen() {
+
+    //완료 미완료 모아보기
+    const [viewAllTasks, setViewAllTasks] = useState(true);
+    const [viewCompleteTasks, setViewCompleteTasks] = useState(false);
+    const [viewIncompleteTasks, setViewIncompleteTasks] = useState(false);
+
     //모달 제어용 state
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalOutput, setModalOutput] = useState("Open Modal");
+    const [modalOutput, setModalOutput] = useState("View All Tasks");
 
     const theme = useSelector((state) => state.themeReducer.theme);
     const dispatch = useDispatch();
@@ -118,13 +123,13 @@ export default function HomeScreen() {
     `;
 
     const ButtonContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-    background-color: ${({theme}) => theme.background};
-    border-radius: 10px;
-    padding: 5px;
-    margin: 3px 0px;
-`;
+        flex-direction: row;
+        align-items: center;
+        background-color: ${({theme}) => theme.background};
+        border-radius: 10px;
+        padding: 5px;
+        margin: 3px 0px;
+    `;
 
     const Title = styled.Text`
         font-size: 40px;
@@ -162,7 +167,7 @@ export default function HomeScreen() {
     `;
     const StyledModalGradeText = styled.Text`
         align-self: center;
-        color: ${({theme}) => theme.text};
+        color: ${({theme}) => theme.main};
         font-size: 15px;
     `;
     const StyledModalText = styled.Text`
@@ -202,7 +207,7 @@ export default function HomeScreen() {
                         setModalVisible(true);
                         }}>
                         {/* 모달에서 선택 결과 값을 State로 받아서 화면에 표시 */}
-                        <StyledModalOutputText> {modalOutput}</StyledModalOutputText>
+                        <StyledModalOutputText>{modalOutput}</StyledModalOutputText>
                     </StyledModalOpenButton>
 
                     {theme.mode === "light"? (
@@ -213,13 +218,34 @@ export default function HomeScreen() {
 
                     <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
                 </ButtonContainer>
-
-                    <List width={width}>
+                    
+                    {viewAllTasks?
+                    (<List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         ))}
-                    </List>
+                    </List>):(null)}
+
+                    {viewIncompleteTasks?
+                    (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.completed) return null;
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>):(null)}
+
+                    {viewCompleteTasks?
+                    (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (!item.completed) return null;
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>):(null)}
 
                     <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
@@ -240,6 +266,9 @@ export default function HomeScreen() {
             onPress={() => {
               setModalOutput("View All Tasks");
               setModalVisible(false);
+              setViewAllTasks(true);
+              setViewCompleteTasks(false);
+              setViewIncompleteTasks(false);
             }}
           >
             <StyledModalText>View All Tasks</StyledModalText>
@@ -251,6 +280,9 @@ export default function HomeScreen() {
             onPress={() => {
               setModalOutput("View Complete Tasks");
               setModalVisible(false);
+              setViewAllTasks(false);
+              setViewCompleteTasks(true);
+              setViewIncompleteTasks(false);
             }}
           >
             <StyledModalText>View Complete Tasks</StyledModalText>
@@ -262,6 +294,9 @@ export default function HomeScreen() {
             onPress={() => {
               setModalOutput("View Incomplete Tasks");
               setModalVisible(false);
+              setViewAllTasks(false);
+              setViewCompleteTasks(false);
+              setViewIncompleteTasks(true);
             }}
           >
             <StyledModalText>View Incomplete Tasks</StyledModalText>
