@@ -158,13 +158,6 @@ export default function HomeScreen() {
                         ))}
                     </List>
 
-                    <List width={width}>
-                        {Object.keys(tasks).reverse().map(item => (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        ))}
-                    </List>
-
             </Container>
         </ThemeProvider>
     ) : (
