@@ -132,20 +132,9 @@ export default function HomeScreen() {
 
     const List = styled.ScrollView`
         flex: 1;
-        width: ${({width}) => width - 20}px;
-    `;
-    const Button = styled.TouchableOpacity`
-        margin: 0px 0;
-        background-color: ${({theme}) => theme.background};
-        padding: 10px 10px;
-        border-radius: 10px;
+        width: ${({width}) => width - 30}px;
     `;
 
-    const ButtonText = styled.Text`
-        font-size: 15px;
-        font-weight: 600;
-        color: ${({theme}) => theme.main};
-    `
     return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
@@ -161,13 +150,21 @@ export default function HomeScreen() {
                 )}
                 <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
                 </ButtonContainer>
-                
+
                     <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         ))}
                     </List>
+
+                    <List width={width}>
+                        {Object.keys(tasks).reverse().map(item => (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        ))}
+                    </List>
+
             </Container>
         </ThemeProvider>
     ) : (
@@ -177,4 +174,11 @@ export default function HomeScreen() {
             onError={console.error}/>
     );
 };
+
+// const orderTaskByDateOld = Object.keys(tasks).sort().reduce(
+//     (orderedTaskByDateOld, key) => {
+//         orderedTaskByDateOld[key] = tasks[key];
+//         return orderedTaskByDateOld;
+//     },
+//     {});
 
