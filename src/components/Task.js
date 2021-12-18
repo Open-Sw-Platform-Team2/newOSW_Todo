@@ -60,6 +60,7 @@ const Contents = styled.Text`
     font-size: 24px;
     color: ${({theme, completed}) => (completed? theme.done : theme.text)};
     text-decoration-line: ${({completed})=>completed? 'line-through' : 'none'};
+    font-style: ${({completed})=>completed? 'italic' : 'normal'};
 `;
 
 Task.propTypes = {

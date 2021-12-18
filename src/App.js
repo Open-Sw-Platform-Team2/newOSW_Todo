@@ -77,7 +77,7 @@ const Tab = createBottomTabNavigator();
 // };
 
 
-
+//테마 적용할때 함수명, provider 안의 스크린만 바꾸시면 될 듯합니다
 const ThemedHomeScreen = () => {
   const store = createStore(combineReducers({ themeReducer }), applyMiddleware(thunk));
   return(
