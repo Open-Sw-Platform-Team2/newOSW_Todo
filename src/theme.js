@@ -7,7 +7,7 @@ export const darkTheme = {
     mode : "dark",
     background: '#101010',
     itemBackground: '#313131',
-    main: '#778bdd',
+    main: '#AABF95',
     text: '#cfcfcf',
     done: '#616161',
     statusBarStyle: "light-content",
@@ -16,9 +16,9 @@ export const darkTheme = {
 //라이트테마 만들기
 export const lightTheme = {
     mode : "light",
-    background: '#F2F5FA',
-    itemBackground: '#CCCFE3',
-    main: '#101010',
+    background: '#F2F2F2',
+    itemBackground: '#9DA658',
+    main: '#5C7346',
     text: '#101010',
     done: '#313131',
     statusBarStyle: "default",

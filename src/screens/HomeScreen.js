@@ -22,9 +22,13 @@ import AccordianExample from '../AccordianFolder';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
+import Modal from 'react-native-modal';
 
 
 export default function HomeScreen() {
+    //모달 제어용 state
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalOutput, setModalOutput] = useState("Open Modal");
 
     const theme = useSelector((state) => state.themeReducer.theme);
     const dispatch = useDispatch();
@@ -116,7 +120,7 @@ export default function HomeScreen() {
     const ButtonContainer = styled.View`
     flex-direction: row;
     align-items: center;
-    background-color: ${({theme}) => theme.itemBackground};
+    background-color: ${({theme}) => theme.background};
     border-radius: 10px;
     padding: 5px;
     margin: 3px 0px;
@@ -127,28 +131,87 @@ export default function HomeScreen() {
         font-weight: 600;
         color: ${({theme}) => theme.main};
         align-self: flex-start;
-        margin: 0px auto 0px;
+        margin: 10px auto 10px;
     `;
 
     const List = styled.ScrollView`
         flex: 1;
-        width: ${({width}) => width - 30}px;
+        width: ${({width}) => width - 40}px;
     `;
 
+    //sort를 위한 모달
+    const StyledModalContainer = styled.View`
+        flex-direction: column;
+        align-items: center;
+        /* 모달창 크기 조절 */
+        width: 320px;
+        height: 220px;
+        background-color: ${({theme}) => theme.background};
+        border-radius: 10px;
+    `;
+    const StyledModalButton = styled.TouchableOpacity`
+        /* Modal Button들의 모달창 내의 높이를 균일하게 하기 위하여 flex를 줌 */
+        flex: 1;
+        width: 320px;
+        justify-content: center;
+    `;
+    const StyledModalGradeWrapper = styled.View`
+        flex: 1;
+        width: 320px;
+        justify-content: center;
+    `;
+    const StyledModalGradeText = styled.Text`
+        align-self: center;
+        color: ${({theme}) => theme.text};
+        font-size: 15px;
+    `;
+    const StyledModalText = styled.Text`
+        align-self: center;
+        color: ${({theme}) => theme.text};
+        font-size: 15px;
+    `;
+    const HorizentalLine = styled.View`
+        background-color: ${({theme}) => theme.text};
+        height: 1px;
+        align-self: stretch;
+    `;
+    const StyledModalOpenButton = styled.TouchableOpacity`
+        height: 50px;
+        width: 60%;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        border-width: 1px;
+        border-color: ${({theme}) => theme.text};
+    `;
+  
+    const StyledModalOutputText = styled.Text`
+        color: ${({theme}) => theme.text};
+        font-size: 20px;
+    `;
     return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
                 <StatusBar barStyle={theme.statusBarStyle} style={theme.background}/>
                 <Title>{currentDate}</Title>
-                <ButtonContainer>
                 <Input placeholder="+ Add a task" value={newTask} onChangeText={_handleTextChange}
                 onSubmitEditing={_addTask} onBlur={_onBlur} />
-                {theme.mode === "light"? (
-                    <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(darkTheme))}/>
-                ) : (
-                    <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(lightTheme))}/>
-                )}
-                <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
+                <ButtonContainer>
+                    <StyledModalOpenButton
+                        onPress={() => {
+                        setModalVisible(true);
+                        }}>
+                        {/* 모달에서 선택 결과 값을 State로 받아서 화면에 표시 */}
+                        <StyledModalOutputText> {modalOutput}</StyledModalOutputText>
+                    </StyledModalOpenButton>
+
+                    {theme.mode === "light"? (
+                        <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(darkTheme))}/>
+                    ) : (
+                        <ThemeChangeButton type = {images.themeChange} onPressOut={() => dispatch(switchTheme(lightTheme))}/>
+                    )}
+
+                    <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
                 </ButtonContainer>
 
                     <List width={width}>
@@ -157,6 +220,64 @@ export default function HomeScreen() {
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         ))}
                     </List>
+
+                    <Modal
+        //isVisible Props에 State 값을 물려주어 On/off control
+        isVisible={modalVisible}
+        //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
+        useNativeDriver={true}
+        hideModalContentWhileAnimating={true}
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
+        <StyledModalContainer>
+          <StyledModalGradeWrapper>
+            <StyledModalGradeText>Filter Tasks</StyledModalGradeText>
+          </StyledModalGradeWrapper>
+
+          <HorizentalLine />
+
+          <StyledModalButton
+            onPress={() => {
+              setModalOutput("View All Tasks");
+              setModalVisible(false);
+            }}
+          >
+            <StyledModalText>View All Tasks</StyledModalText>
+          </StyledModalButton>
+
+          <HorizentalLine />
+
+          <StyledModalButton
+            onPress={() => {
+              setModalOutput("View Complete Tasks");
+              setModalVisible(false);
+            }}
+          >
+            <StyledModalText>View Complete Tasks</StyledModalText>
+          </StyledModalButton>
+
+          <HorizentalLine />
+
+          <StyledModalButton
+            onPress={() => {
+              setModalOutput("View Incomplete Tasks");
+              setModalVisible(false);
+            }}
+          >
+            <StyledModalText>View Incomplete Tasks</StyledModalText>
+          </StyledModalButton>
+
+          <HorizentalLine />
+
+          <StyledModalButton
+            onPress={() => {
+              setModalVisible(false);
+            }}
+          >
+            <StyledModalGradeText>Cancel</StyledModalGradeText>
+          </StyledModalButton>
+        </StyledModalContainer>
+      </Modal>
 
             </Container>
         </ThemeProvider>
@@ -168,10 +289,4 @@ export default function HomeScreen() {
     );
 };
 
-// const orderTaskByDateOld = Object.keys(tasks).sort().reduce(
-//     (orderedTaskByDateOld, key) => {
-//         orderedTaskByDateOld[key] = tasks[key];
-//         return orderedTaskByDateOld;
-//     },
-//     {});
 
