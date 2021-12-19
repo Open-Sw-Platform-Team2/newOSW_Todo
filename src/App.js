@@ -77,55 +77,55 @@ const Tab = createBottomTabNavigator();
 // };
 
 
-
+//테마 적용할때 함수명, provider 안의 스크린만 바꾸시면 될 듯합니다
 const ThemedHomeScreen = () => {
-  const store = createStore(combineReducers({ themeReducer }), applyMiddleware(thunk));
-  return(
-    <Provider store={store}><HomeScreen/></Provider>
-  )
+    const store = createStore(combineReducers({ themeReducer }), applyMiddleware(thunk));
+    return(
+        <Provider store={store}><HomeScreen/></Provider>
+    )
 
 };
 
 export default function App() {
-  return (
-   
-    <NavigationContainer>
-      <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{ tabBarActiveTintColor: '#e91e63', }}
-      >
-      
-      <Tab.Screen name="Home" component={ ThemedHomeScreen }
-      options={{ tabBarLabel: 'Home',
-      tabBarIcon: ({ color, size }) => (
-      <MaterialCommunityIcons name="format-list-checks" color={color} size={size} /> ),
-      headerShown: false }}
-      />
+    return (
 
-      <Tab.Screen name="Calendar" component={ CalendarScreen }
-      options={{ tabBarLabel: 'Calendar',
-      tabBarIcon: ({ color, size }) => (
-      <MaterialCommunityIcons name="calendar-month-outline" color={color} size={size} /> ),
-      headerShown: false }}
-      />
+        <NavigationContainer>
+            <Tab.Navigator
+                initialRouteName="Home"
+                screenOptions={{ tabBarActiveTintColor: '#e91e63', }}
+            >
 
-      <Tab.Screen name="Progress" component={ ProgressScreen }
-      options={{ tabBarLabel: 'Progress',
-      tabBarIcon: ({ color, size }) => (
-      <MaterialCommunityIcons name="chart-donut" color={color} size={size} /> ),
-      headerShown: false }}
-      />
+                <Tab.Screen name="Home" component={ ThemedHomeScreen }
+                            options={{ tabBarLabel: 'Home',
+                                tabBarIcon: ({ color, size }) => (
+                                    <MaterialCommunityIcons name="format-list-checks" color={color} size={size} /> ),
+                                headerShown: false }}
+                />
 
-      <Tab.Screen name="MyPage" component={ MyPageScreen }
-      options={{ tabBarLabel: 'MyPage',
-      tabBarIcon: ({ color, size }) => (
-      <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} /> ),
-      tabBarBadge: 2,
-      headerShown: false }}
-      />
+                <Tab.Screen name="Calendar" component={ CalendarScreen }
+                            options={{ tabBarLabel: 'Calendar',
+                                tabBarIcon: ({ color, size }) => (
+                                    <MaterialCommunityIcons name="calendar-month-outline" color={color} size={size} /> ),
+                                headerShown: false }}
+                />
 
-      </Tab.Navigator>
-      </NavigationContainer>
-      
-      );
-      }
+                <Tab.Screen name="Progress" component={ ProgressScreen }
+                            options={{ tabBarLabel: 'Progress',
+                                tabBarIcon: ({ color, size }) => (
+                                    <MaterialCommunityIcons name="chart-donut" color={color} size={size} /> ),
+                                headerShown: false }}
+                />
+
+                <Tab.Screen name="MyPage" component={ MyPageScreen }
+                            options={{ tabBarLabel: 'MyPage',
+                                tabBarIcon: ({ color, size }) => (
+                                    <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} /> ),
+                                tabBarBadge: 2,
+                                headerShown: false }}
+                />
+
+            </Tab.Navigator>
+        </NavigationContainer>
+
+    );
+}

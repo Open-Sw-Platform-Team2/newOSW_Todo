@@ -5,17 +5,19 @@ npm install @react-native-async-storage/async-storage
 npm install moment
 npm install react-native-calendar-picker
 */
-
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import AsyncStorageLib from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-web';
+/*scrollview로 달력에서 화면을 내리면 duedate 저장 리스트가 뜨게 하려고 했으나
+이유를 알 수 없는 오류가 떠 보류했습니다.*/
 
 export default function App() {
 
   const [date, setDate] = useState('')
   const [date1, setDate1] = useState('')
-  const [expense, setExpense] = useState('')
+  const [expense, setDeadline] = useState('')
   const [memo, setMemo] = useState('')
 
   async function date_change(d) {
@@ -30,11 +32,11 @@ export default function App() {
     console.log(value);
 
     if (value !== null) {
-      setExpense(value)
+      setDeadline(value)
       setMemo(value_m)
     }
     else {
-      setExpense('')
+      setDeadline('')
       setMemo('')
     }
   }
@@ -50,8 +52,8 @@ export default function App() {
       <View style={styles.box}>
         <Text style={styles.datetext}>{ date1 }</Text>
         <View style={styles.row}>
-          <Text style={styles.text}>Duedate</Text>
-          <TextInput style={styles.expense} keyboardType="numeric" onChangeText={setExpense} value={expense}/>
+          <Text style={styles.text}>Deadline: </Text>
+          <TextInput style={styles.expense} keyboardType="numeric" onChangeText={setDeadline} value={expense}/>
           <Button title="Save" onPress={save_memo}/>
         </View>
         <TextInput style={styles.memo} placeholder="Memo" onChangeText={setMemo} value={memo}/>

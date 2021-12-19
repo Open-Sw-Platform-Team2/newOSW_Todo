@@ -11,4 +11,4 @@ const Navigation=()=> {
     );
 };
 
-export {Login, Signup};
+export default Navigation;
