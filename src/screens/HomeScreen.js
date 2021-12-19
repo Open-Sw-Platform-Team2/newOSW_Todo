@@ -142,13 +142,10 @@ export default function HomeScreen() {
     const _searchMode = () => {
         if(isSearching){
             setIsSearching(false);
-            setViewAllTasks(true);
+            setSearchText('');
         }
         else if (!isSearching){
             setIsSearching(true);
-            setViewAllTasks(false);
-            setViewCompleteTasks(false);
-            setViewIncompleteTasks(false);
         }   
     };
 
@@ -262,34 +259,7 @@ export default function HomeScreen() {
                 </ButtonContainer>
                     
                     {viewAllTasks?
-                    (<List width={width}>
-                        {Object.values(tasks).reverse().map(item => (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        ))}
-                    </List>):(null)}
-
-                    {viewIncompleteTasks?
-                    (<List width={width}>
-                        {Object.values(tasks).reverse().map(item =>{
-                        if (item.completed) return null;
-                        return (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        )})}
-                    </List>):(null)}
-
-                    {viewCompleteTasks?
-                    (<List width={width}>
-                        {Object.values(tasks).reverse().map(item =>{
-                        if (!item.completed) return null;
-                        return (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        )})}
-                    </List>):(null)}
-
-                    {isSearching?
+                    (isSearching?
                     (<List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
                         if (item.text.match(searchText))
@@ -297,7 +267,66 @@ export default function HomeScreen() {
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item => (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        ))}
+                    </List>
+                    )):(null)}
+
+                    {viewIncompleteTasks?
+                    (isSearching?(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if ((!item.completed)&&item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (!item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)):(null)}
+
+                    {viewCompleteTasks?
+                    (isSearching?(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.completed&&item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)
+                    ):(null)}
+
+                    {/*isSearching?
+                    (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                        </List>):(null)*/}
 
                     <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
