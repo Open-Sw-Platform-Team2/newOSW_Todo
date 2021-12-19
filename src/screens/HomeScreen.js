@@ -186,6 +186,15 @@ export default function HomeScreen() {
     `;
 
     //sort를 위한 모달
+    const StyledModalContainer_filter = styled.View`
+        flex-direction: column;
+        align-items: center;
+        /* 모달창 크기 조절 */
+        width: 320px;
+        height: 220px;
+        background-color: ${({theme}) => theme.background};
+        border-radius: 10px;
+    `;
     const StyledModalContainer = styled.View`
         flex-direction: column;
         align-items: center;
@@ -382,7 +391,7 @@ export default function HomeScreen() {
         hideModalContentWhileAnimating={true}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
-        <StyledModalContainer>
+        <StyledModalContainer_filter>
           <StyledModalGradeWrapper>
             <StyledModalGradeText>Filter Tasks</StyledModalGradeText>
           </StyledModalGradeWrapper>
@@ -438,7 +447,7 @@ export default function HomeScreen() {
           >
             <StyledModalGradeText>Cancel</StyledModalGradeText>
           </StyledModalButton>
-        </StyledModalContainer>
+        </StyledModalContainer_filter>
       </Modal>
 
             </Container>
