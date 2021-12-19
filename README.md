@@ -28,7 +28,7 @@ Todo list application 개발
 - [ ] to-do에 comment 추가 Add a comment to a to-do list
 - [ ] to-do에 사진 추가 Add a picture to a to-do list
 - [ ] to-do에 위치정보 추가 Add a specific location to a to-do list with a map view
-- [ ] 친구에게 to-do list 공유 Share the to-do list to a friend
+- [x] 친구에게 to-do list 공유 Share the to-do list to a friend
 - [ ] 완수율(completion rate) 카테고리별/날짜별/주별/달별로 보여줌 (시각화)
 - [ ] Show/visualize the completion rate per category and per day, week or month
 - [ ] 카테고리별 → My Page (Profile) & 날짜/주/달별 → Calendar page
