@@ -23,6 +23,9 @@ import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
 import Modal from 'react-native-modal';
 import SearchBar from '../components/SearchBar';
+import { TextInput } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function HomeScreen() {
     //검색기능
@@ -53,7 +56,11 @@ export default function HomeScreen() {
     const _handleSearchTextChange = text => {
         setSearchText(text);
     };
-
+    //코멘트 추가
+    const [CommentModalVisible, setCommentModalVisible] = useState(false);
+    const _addComment = () => {
+        setCommentModalVisible(true);
+    }
 
 
     //모달 제어용 state
@@ -118,6 +125,36 @@ export default function HomeScreen() {
             }, { text: "No"},
         ]);
     };
+//사용자의 현재 위치 위도, 경도 가져오기
+   
+    const GeoLocationAPI = ({ }) => 
+    {
+        const [latitude, setLatitude] = useState(null);
+        const [longitude, setLogitude] = useState(null);
+
+        const geoLocation = () => {
+            Geolocation.getCurrentPosition(
+                position => {
+                    const latitude = JSON.stringify(position.coords.latitude);
+                    const longitude = JSON.stringify(position.coords.longitude);
+
+                    setLatitude(latitude);
+                    setLogitude(longitude);
+                },
+                error => { console.log(error.code, error.message); },
+                {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
+            )
+        }
+    }
+
+    const addlocation = () => {
+        Alert.alert("Add location in your task",[
+            {   
+                text: "Yes",
+                onPress: () => setTasks([]),
+            }, { text: "No"},
+        ])
+    }
 
     const _toggleTask = id => {
         const currentTasks = Object.assign({}, tasks);
@@ -148,6 +185,7 @@ export default function HomeScreen() {
             setIsSearching(true);
         }   
     };
+
 
     //스타일 적용
     const Container = styled.SafeAreaView`
@@ -185,9 +223,14 @@ export default function HomeScreen() {
         align-items: center;
         /* 모달창 크기 조절 */
         width: 320px;
-        height: 220px;
+        height: 500px;
         background-color: ${({theme}) => theme.background};
         border-radius: 10px;
+    `;
+    const ModalButtionContainer = styled.View`
+        flex-direction: row;
+        align-items: center;
+        background-color: ${({theme}) => theme.background};
     `;
     const StyledModalButton = styled.TouchableOpacity`
         /* Modal Button들의 모달창 내의 높이를 균일하게 하기 위하여 flex를 줌 */
@@ -229,6 +272,17 @@ export default function HomeScreen() {
         color: ${({theme}) => theme.text};
         font-size: 20px;
     `;
+
+    const StyledAddCommentModal = styled.TextInput.attrs(({theme})=>({placeholderTextColor: theme.main,
+    }))`
+        width:320px;
+        height: 60%;
+        padding: 15px 20px;
+        background-color: ${({theme}) => theme.itemBackground};
+        font-size: 15px;
+        color: ${({theme}) => theme.text};
+    `;
+
     return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
@@ -265,14 +319,14 @@ export default function HomeScreen() {
                         if (item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
                     <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         ))}
                     </List>
                     )):(null)}
@@ -284,7 +338,7 @@ export default function HomeScreen() {
                         if ((!item.completed)&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
@@ -293,7 +347,7 @@ export default function HomeScreen() {
                         if (!item.completed)
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>)):(null)}
 
@@ -304,7 +358,7 @@ export default function HomeScreen() {
                         if (item.completed&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
@@ -313,22 +367,46 @@ export default function HomeScreen() {
                         if (item.completed)
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>)
                     ):(null)}
 
-                    {/*isSearching?
-                    (<List width={width}>
-                        {Object.values(tasks).reverse().map(item =>{
-                        if (item.text.match(searchText))
-                        return (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        )})}
-                        </List>):(null)*/}
 
-                    <Modal
+        <Modal
+        //isVisible Props에 State 값을 물려주어 On/off control
+        isVisible={CommentModalVisible}
+        //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
+        useNativeDriver={true}
+        hideModalContentWhileAnimating={true}
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <StyledModalContainer>
+          <StyledModalGradeWrapper>
+            <StyledModalGradeText>Add Comments</StyledModalGradeText>
+          </StyledModalGradeWrapper>
+          <HorizentalLine />
+          <StyledAddCommentModal
+          placeholder="add comments to your task..."/>
+          <HorizentalLine />
+          <ModalButtionContainer>
+          <IconButton type = {images.location} onPressOut={addlocation}/>
+          <IconButton type = {images.addImage}/>
+          {/*<IconButton type = {images.cancel}/>
+          cancel 버튼 만들어봤는데 둘 중에 하나 선택하시면 될 것 같아요*/}
+          </ModalButtionContainer>
+          <HorizentalLine />
+          <StyledModalButton
+            onPress={() => {
+              setCommentModalVisible(false);
+            }}
+          >
+            <StyledModalGradeText>Cancel</StyledModalGradeText>
+          </StyledModalButton>
+        </StyledModalContainer>
+      </Modal>
+
+
+        <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
         isVisible={modalVisible}
         //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
