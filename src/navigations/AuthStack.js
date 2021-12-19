@@ -3,10 +3,7 @@
 import React, {useContext} from "react";
 import {ThemeContext} from 'styled-components/native';
 import {createStackNavigator} from '@react-navigation/stack';
-// import {createStackNavigator} from "react-navigation-stack";
-// import { NavigationContainer } from '@react-navigation/native';
-
-import {Login, Signup} from './index';
+import {Login, Signup} from '../screens';
 
 const Stack = createStackNavigator();
 
