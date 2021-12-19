@@ -292,7 +292,7 @@ export default function HomeScreen() {
                     {isSearching?
                     (<List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (item.text!=searchText) return null;
+                        if (item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
