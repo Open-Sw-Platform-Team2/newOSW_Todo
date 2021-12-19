@@ -23,6 +23,7 @@ import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
 import Modal from 'react-native-modal';
 import SearchBar from '../components/SearchBar';
+import { TextInput } from 'react-native';
 
 export default function HomeScreen() {
     //검색기능
@@ -53,7 +54,11 @@ export default function HomeScreen() {
     const _handleSearchTextChange = text => {
         setSearchText(text);
     };
-
+    //코멘트 추가
+    const [CommentModalVisible, setCommentModalVisible] = useState(false);
+    const _addComment = () => {
+        setCommentModalVisible(true);
+    }
 
 
     //모달 제어용 state
@@ -149,6 +154,7 @@ export default function HomeScreen() {
         }   
     };
 
+
     //스타일 적용
     const Container = styled.SafeAreaView`
         flex: 1;
@@ -229,6 +235,17 @@ export default function HomeScreen() {
         color: ${({theme}) => theme.text};
         font-size: 20px;
     `;
+
+    const StyledAddCommentModal = styled.TextInput.attrs(({theme})=>({placeholderTextColor: theme.main,
+    }))`
+        width:320px;
+        height: 60%;
+        padding: 15px 20px;
+        background-color: ${({theme}) => theme.itemBackground};
+        font-size: 15px;
+        color: ${({theme}) => theme.text};
+    `;
+
     return isReady ? (
         <ThemeProvider theme={theme}>
             <Container>
@@ -265,14 +282,14 @@ export default function HomeScreen() {
                         if (item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
                     <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         ))}
                     </List>
                     )):(null)}
@@ -284,7 +301,7 @@ export default function HomeScreen() {
                         if ((!item.completed)&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
@@ -293,7 +310,7 @@ export default function HomeScreen() {
                         if (!item.completed)
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>)):(null)}
 
@@ -304,7 +321,7 @@ export default function HomeScreen() {
                         if (item.completed&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>
                     ):(
@@ -313,22 +330,38 @@ export default function HomeScreen() {
                         if (item.completed)
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                            toggleTask={_toggleTask} updateTask={_updateTask} addComment={_addComment}/>
                         )})}
                     </List>)
                     ):(null)}
 
-                    {/*isSearching?
-                    (<List width={width}>
-                        {Object.values(tasks).reverse().map(item =>{
-                        if (item.text.match(searchText))
-                        return (
-                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
-                            toggleTask={_toggleTask} updateTask={_updateTask} />
-                        )})}
-                        </List>):(null)*/}
 
-                    <Modal
+        <Modal
+        //isVisible Props에 State 값을 물려주어 On/off control
+        isVisible={CommentModalVisible}
+        //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
+        useNativeDriver={true}
+        hideModalContentWhileAnimating={true}
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <StyledModalContainer>
+          <StyledModalGradeWrapper>
+            <StyledModalGradeText>Add Comment</StyledModalGradeText>
+          </StyledModalGradeWrapper>
+          <HorizentalLine />
+          <StyledAddCommentModal/>
+          <HorizentalLine />
+          <StyledModalButton
+            onPress={() => {
+              setCommentModalVisible(false);
+            }}
+          >
+            <StyledModalGradeText>Cancel</StyledModalGradeText>
+          </StyledModalButton>
+        </StyledModalContainer>
+      </Modal>
+
+
+        <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
         isVisible={modalVisible}
         //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.

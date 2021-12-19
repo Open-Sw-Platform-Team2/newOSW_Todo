@@ -5,6 +5,7 @@ import Edit from '../public/outline_edit_white_24dp.png';
 import DeleteAll from '../public/icons8-delete-list-48.png';
 import ThemeChanger from '../public/day-and-night.png';
 import Search from '../public/search.png';
+import More from '../public/more.png';
 
 export const images = {
     uncompleted: UncheckedBox,
@@ -14,4 +15,5 @@ export const images = {
     deleteAll: DeleteAll,
     themeChange: ThemeChanger,
     search: Search,
+    more: More,
 };
