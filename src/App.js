@@ -23,8 +23,7 @@ import HomeScreen from './screens/HomeScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import ProgressScreen from './screens/ProgressScreen';
 import MyPageScreen from './screens/MyPageScreen';
-import LoginScreen from "./screens/Login";
-import SignupScreen from './screens/Signup';
+import Navigation from './navigations';
 
 import {useState} from "react";
 
@@ -33,12 +32,50 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import themeReducer from './redux/themeReducer';
-import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
-import {createNativeStackNavigator} from "react-native-screens/native-stack";
 //테마 관련 import
 
 const Tab = createBottomTabNavigator();
-const Stack=createNativeStackNavigator();
+//----로딩화면---- splash, icon.png
+//로딩이미지
+// const cacheImges = images=>{
+//     return images.map(image => {
+//         if(typeof image ==='string'){
+//             return Image.prefetch(image);
+//         }
+//         else{
+//             return Asset.fromModule(image).downloadAsync();
+//         }
+//     });
+// }
+//
+// const cacheFonts = fonts => {
+//     return fonts.map(font => Font.loadAsync(font));
+// };
+//
+// //로딩화면
+// const App = async () => {
+//     const [isReady, setIsReady] = useState(false);
+//
+//     const _loadAssets = async () =>{
+//         cacheImges([require('../assets/splash.png')]);
+//         const fontAssets = cacheFonts([]);
+//
+//         await Promise.all([...imageAssets, ...fontAssets]);
+//     };
+//     return isReady ? (
+//         <ThemeProvider theme ={theme}>
+//             <StatusBar barStyle= "dark-content"/>
+//             <Navigation/>
+//         </ThemeProvider>
+//     ) : (
+//         <AppLoading
+//             startAsync={_loadAssets}
+//             onFinish   ={()=> setIsReady(true)}
+//             onError ={console.warn}
+//         />
+//     );
+// };
+
 
 //테마 적용할때 함수명, provider 안의 스크린만 바꾸시면 될 듯합니다
 const ThemedHomeScreen = () => {
@@ -49,16 +86,12 @@ const ThemedHomeScreen = () => {
 
 };
 
-
-
-
-function App() {
+export default function App() {
     return (
 
         <NavigationContainer>
-
             <Tab.Navigator
-                initialRouteName="Login"
+                initialRouteName="Home"
                 screenOptions={{ tabBarActiveTintColor: '#e91e63', }}
             >
 
@@ -96,5 +129,3 @@ function App() {
 
     );
 }
-
-export default App;
