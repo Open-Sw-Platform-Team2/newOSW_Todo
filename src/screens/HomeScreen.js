@@ -142,13 +142,10 @@ export default function HomeScreen() {
     const _searchMode = () => {
         if(isSearching){
             setIsSearching(false);
-            setViewAllTasks(true);
+            setSearchText('');
         }
         else if (!isSearching){
             setIsSearching(true);
-            setViewAllTasks(false);
-            setViewCompleteTasks(false);
-            setViewIncompleteTasks(false);
         }   
     };
 
@@ -262,42 +259,74 @@ export default function HomeScreen() {
                 </ButtonContainer>
                     
                     {viewAllTasks?
+                    (isSearching?
                     (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>
+                    ):(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         ))}
-                    </List>):(null)}
+                    </List>
+                    )):(null)}
 
                     {viewIncompleteTasks?
-                    (<List width={width}>
+                    (isSearching?(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (item.completed) return null;
+                        if ((!item.completed)&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (!item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)):(null)}
 
                     {viewCompleteTasks?
-                    (<List width={width}>
+                    (isSearching?(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (!item.completed) return null;
+                        if (item.completed&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)
+                    ):(null)}
 
-                    {isSearching?
+                    {/*isSearching?
                     (<List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (item.text!=searchText) return null;
+                        if (item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                        </List>):(null)*/}
 
                     <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
