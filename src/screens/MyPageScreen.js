@@ -1,11 +1,61 @@
 import * as React from 'react';
-import { Text, View, Image, ScrollView, SafeAreaView, StyleSheet, SafeAreaViewComponent,TouchableOpacity,Button,} from 'react-native';
+import {
+    Text,
+    View,
+    Image,
+    ScrollView,
+    SafeAreaView,
+    StyleSheet,
+    SafeAreaViewComponent,
+    TouchableOpacity,
+    Button,
+    Share,
+} from 'react-native';
 // import {ScrollView} from "react-native-web";
 import LoginScreen from './Login';
 import SignupScreen from './Signup';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "react-navigation-stack";
+// import Share from 'react-native-share';
 
+const onShare = async () => {
+    try {
+        const result = await Share.share(
+            {
+                message: 'sharing',
+            } );
+        if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    console.log('activityType!');
+                } else {
+                    console.log('Share!'); }
+        } else if (result.action === Share.dismissedAction) {
+            console.log('dismissed'); }
+    } catch (error) { alert(error.message); }
+};
+
+const link =
+    Platform.OS ==='ios'
+
+
+// //링크 생성시 넣기
+// const result=await Share.share(
+//     {
+//         message:'link',
+//     }
+// );
+
+
+// const myCustomShare=async()=>{
+//     const shareOptions={
+//         message:'This is a test message',
+//     }
+//     try{
+//         const ShareResponse = await Share.open(shareOptions);
+//     } catch(error){
+//         console.log('Error => ', error);
+//     }
+// };
 
 
 const MyPageScreen = ({navigation}) => {
@@ -24,7 +74,7 @@ const MyPageScreen = ({navigation}) => {
                 <TouchableOpacity style={styles.userBtn} onPress={()=> navigation.navigate('LoginScreen')}>
                     <Text style={styles.userBtnTxt}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.userBtn}>
+                <TouchableOpacity style={styles.userBtn} onPress={()=> onShare()}>
                     <Text style={styles.userBtnTxt}>Share</Text>
                 </TouchableOpacity>
             </View>
