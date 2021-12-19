@@ -7,7 +7,7 @@ import { images } from '../Images';
 import Input from './Input';
 import styled from 'styled-components';
 
-const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
+const Task = ({ item, deleteTask, toggleTask, updateTask, addComment }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [text, setText] = useState(item.text);
 
@@ -42,6 +42,8 @@ const Task = ({ item, deleteTask, toggleTask, updateTask }) => {
             {item.completed || (<IconButton type={images.update}
             onPressOut={_handleUpdateButtonPress} />)}
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}
+            completed={item.completed} />
+            <IconButton type={images.more} id={item.id} onPressOut={addComment}
             completed={item.completed} />
         </Container>
     );
