@@ -18,7 +18,6 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "react-navigation-stack";
 // import Share from 'react-native-share';
 
-//공유하기 기능
 const onShare = async () => {
     try {
         const result = await Share.share(
