@@ -6,7 +6,7 @@
 styled-components를 이용한 스타일링이 활용도가 높다고 생각합니다! */
 
 import React, {useState, useEffect} from 'react';
-import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView, Alert } from 'react-native';
+import { StatusBar, SafeAreaView, Text, Dimensions, View, ScrollView, Alert, Image } from 'react-native';
 //import { ViewStyles, textStyles, barStyles } from '../styles';
 import Input from '../components/Input';
 import { images } from '../Images';
@@ -23,9 +23,41 @@ import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
 import Modal from 'react-native-modal';
 import SearchBar from '../components/SearchBar';
+import {launchCamera, launchImageLibrary} from "react-native-image-picker"; //앨범
 import { TextInput } from 'react-native';
+import {coalesceStatuses} from "expo-permissions/build/CoalescedPermissions";
+
+
 
 export default function HomeScreen() {
+//----이미지----
+
+    const [imageUri, setimageUri] = useState('');
+    const openGallery=()=>{
+        const options={
+            storageOptions: {
+                path: 'images',
+                mediaType: 'photo',
+            },
+            includeBase64: true,
+        };
+
+        launchImageLibrary(options, response=>{
+            console.log('Response= ', response);
+            if(response.didCancel){
+                console.log('Cancelled');
+            }else if(response.error){
+                console.log('ImagePicker Error: ', response.error);
+            }else if(response.customButton){
+                console.log('User tapped custom btn: ', response.customButton);
+            }else{
+                const source={uri: 'data:image/jpeg;base64, '+response.base64};
+                setimageUri(source);
+            }
+        });
+
+    }
+
     //검색기능
     const onSearch = (text) => {
         if (text) {
@@ -358,7 +390,13 @@ export default function HomeScreen() {
         hideModalContentWhileAnimating={true}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <StyledModalContainer>
+
           <StyledModalGradeWrapper>
+              <Image
+                  source={imageUri}
+                  style={{height: 100,
+                      width: 100, borderColor: 'black',
+                  }}/>
             <StyledModalGradeText>Add Comments</StyledModalGradeText>
           </StyledModalGradeWrapper>
           <HorizentalLine />
@@ -366,10 +404,12 @@ export default function HomeScreen() {
           placeholder="add comments to your task..."/>
           <HorizentalLine />
           <ModalButtionContainer>
-          <IconButton type = {images.location}/>
-          <IconButton type = {images.addImage}/>
-          {/*<IconButton type = {images.cancel}/>
-          cancel 버튼 만들어봤는데 둘 중에 하나 선택하시면 될 것 같아요*/}
+              <IconButton type = {images.location}/>
+              <IconButton type = {images.addImage} onPressOut={()=> {
+                  openGallery();
+                  alert("Gallery Pressed")
+              }}/>
+          {/*<IconButton type = {images.cancel}/> cancel 버튼 만들어봤는데 둘 중에 하나 선택하시면 될 것 같아요*/}
           </ModalButtionContainer>
           <HorizentalLine />
           <StyledModalButton

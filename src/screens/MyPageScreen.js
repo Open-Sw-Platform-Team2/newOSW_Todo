@@ -18,11 +18,28 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "react-navigation-stack";
 // import Share from 'react-native-share';
 
+import Todo from './HomeScreen';
+import tasks from '../components/Task'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+//Async로 task 받아오기
+// AsyncStorage.getItem('tasks', (err, value)=>{
+//     const loadedTasks = Json.parse(result);
+//     console.log(loadedTasks);
+// });
+
+
+// const getTasks= async ()=>{
+//     const loadedTasks = await AsyncStorage.getItem('tasks');
+//
+//     // setTasks(JSON.parse(loadedTasks || '{}'));
+// }
+
 const onShare = async () => {
     try {
         const result = await Share.share(
             {
-                message: 'sharing',
+                message: 'sharing', //Todo: 해당부분 리스트로 대체
             } );
         if (result.action === Share.sharedAction) {
             if (result.activityType) {
