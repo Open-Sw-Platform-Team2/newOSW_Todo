@@ -22,14 +22,39 @@ import { useSelector, useDispatch } from 'react-redux';
 import { switchTheme } from '../redux/themeAction';
 import ThemeChangeButton from '../components/themeChangeButton';
 import Modal from 'react-native-modal';
-
+import SearchBar from '../components/SearchBar';
 
 export default function HomeScreen() {
+    //검색기능
+    const onSearch = (text) => {
+        if (text) {
+          setSearching(true)
+          const temp = text.toLowerCase()
+    
+          const tempList = dataSource.filter(item => {
+            if (item.match(temp))
+              return item
+          })
+          setFiltered(tempList)
+        }
+        else {
+          setSearching(false)
+          setFiltered(dataSource)
+        }
+    }
 
     //완료 미완료 모아보기
     const [viewAllTasks, setViewAllTasks] = useState(true);
     const [viewCompleteTasks, setViewCompleteTasks] = useState(false);
     const [viewIncompleteTasks, setViewIncompleteTasks] = useState(false);
+    //검색기능
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const _handleSearchTextChange = text => {
+        setSearchText(text);
+    };
+
+
 
     //모달 제어용 state
     const [modalVisible, setModalVisible] = useState(false);
@@ -114,6 +139,16 @@ export default function HomeScreen() {
         setNewTask(text);
     };
 
+    const _searchMode = () => {
+        if(isSearching){
+            setIsSearching(false);
+            setSearchText('');
+        }
+        else if (!isSearching){
+            setIsSearching(true);
+        }   
+    };
+
     //스타일 적용
     const Container = styled.SafeAreaView`
         flex: 1;
@@ -182,7 +217,7 @@ export default function HomeScreen() {
     `;
     const StyledModalOpenButton = styled.TouchableOpacity`
         height: 50px;
-        width: 60%;
+        width: 50%;
         justify-content: center;
         align-items: center;
         border-radius: 10px;
@@ -199,8 +234,11 @@ export default function HomeScreen() {
             <Container>
                 <StatusBar barStyle={theme.statusBarStyle} style={theme.background}/>
                 <Title>{currentDate}</Title>
+                {isSearching?
+                (<SearchBar placeholder='Search items' value={searchText} onChangeText={_handleSearchTextChange}/>
+                ):(
                 <Input placeholder="+ Add a task" value={newTask} onChangeText={_handleTextChange}
-                onSubmitEditing={_addTask} onBlur={_onBlur} />
+                onSubmitEditing={_addTask} onBlur={_onBlur} />)}
                 <ButtonContainer>
                     <StyledModalOpenButton
                         onPress={() => {
@@ -217,35 +255,78 @@ export default function HomeScreen() {
                     )}
 
                     <IconButton type={images.deleteAll} onPressOut={_clearAllTask}/>
+                    <IconButton type={images.search} onPressOut={_searchMode}/>
                 </ButtonContainer>
                     
                     {viewAllTasks?
+                    (isSearching?
                     (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>
+                    ):(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item => (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         ))}
-                    </List>):(null)}
+                    </List>
+                    )):(null)}
 
                     {viewIncompleteTasks?
-                    (<List width={width}>
+                    (isSearching?(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (item.completed) return null;
+                        if ((!item.completed)&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (!item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)):(null)}
 
                     {viewCompleteTasks?
-                    (<List width={width}>
+                    (isSearching?(
+                    <List width={width}>
                         {Object.values(tasks).reverse().map(item =>{
-                        if (!item.completed) return null;
+                        if (item.completed&&item.text.match(searchText))
                         return (
                             <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
                             toggleTask={_toggleTask} updateTask={_updateTask} />
                         )})}
-                    </List>):(null)}
+                    </List>
+                    ):(
+                    <List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.completed)
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                    </List>)
+                    ):(null)}
+
+                    {/*isSearching?
+                    (<List width={width}>
+                        {Object.values(tasks).reverse().map(item =>{
+                        if (item.text.match(searchText))
+                        return (
+                            <Task key={item.id} text={item.text} item={item} deleteTask={_deleteTask}
+                            toggleTask={_toggleTask} updateTask={_updateTask} />
+                        )})}
+                        </List>):(null)*/}
 
                     <Modal
         //isVisible Props에 State 값을 물려주어 On/off control
@@ -264,7 +345,7 @@ export default function HomeScreen() {
 
           <StyledModalButton
             onPress={() => {
-              setModalOutput("View All Tasks");
+              setModalOutput("All Tasks");
               setModalVisible(false);
               setViewAllTasks(true);
               setViewCompleteTasks(false);
@@ -278,7 +359,7 @@ export default function HomeScreen() {
 
           <StyledModalButton
             onPress={() => {
-              setModalOutput("View Complete Tasks");
+              setModalOutput("Complete Tasks");
               setModalVisible(false);
               setViewAllTasks(false);
               setViewCompleteTasks(true);
@@ -292,7 +373,7 @@ export default function HomeScreen() {
 
           <StyledModalButton
             onPress={() => {
-              setModalOutput("View Incomplete Tasks");
+              setModalOutput("Incomplete Tasks");
               setModalVisible(false);
               setViewAllTasks(false);
               setViewCompleteTasks(false);

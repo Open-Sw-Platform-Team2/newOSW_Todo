@@ -5,19 +5,19 @@ import { lightTheme, darkTheme, theme } from '../theme';
 import { Dimensions } from "react-native";
 import PropTypes from "prop-types";
 
-const StyledInput = styled.TextInput.attrs(({theme})=>({placeholderTextColor: theme.main,
+const StyledInput = styled.TextInput.attrs(({theme})=>({placeholderTextColor: theme.itemBackground,
 }))`
     width: ${({width}) => width - 40}px;
     height: 60px;
     margin: 3px 0;
     padding: 15px 20px;
     border-radius: 10px;
-    background-color: ${({theme}) => theme.itemBackground};
+    background-color: ${({theme}) => theme.main};
     font-size: 25px;
     color: ${({theme}) => theme.text};
 `;
 //
-const Input = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) => {
+const SearchBar = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) => {
     const width = Dimensions.get('window').width;
     
     return (
@@ -37,13 +37,13 @@ const Input = ({ placeholder, value, onChangeText, onSubmitEditing, onBlur }) =>
     );
 };
 //
-Input.propTypes = {
+SearchBar.propTypes = {
     placeholder: PropTypes.string,
-    value: PropTypes.string.isRequired,
-    onChangeText: PropTypes.func.isRequired,
-    onSubmitEditing: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    onChangeText: PropTypes.func,
+    onSubmitEditing: PropTypes.func,
     onBlur: PropTypes.func,
 }
 
 
-export default Input;
+export default SearchBar;

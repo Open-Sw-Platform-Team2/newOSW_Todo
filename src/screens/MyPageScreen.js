@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { Text, View, Image, ScrollView, SafeAreaView, StyleSheet, SafeAreaViewComponent,TouchableOpacity,} from 'react-native';
+import { Text, View, Image, ScrollView, SafeAreaView, StyleSheet, SafeAreaViewComponent,TouchableOpacity,Button,} from 'react-native';
 // import {ScrollView} from "react-native-web";
+import LoginScreen from './Login';
+import SignupScreen from './Signup';
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "react-navigation-stack";
+
+
 
 const MyPageScreen = ({navigation}) => {
     return (
@@ -13,11 +19,13 @@ const MyPageScreen = ({navigation}) => {
                 <Text style = {styles.userId}>ewhain@ewhain.net</Text>
                 <View style = {styles.userBtnWrapper}>
                     {/*Todo: 본인 계정일 때만 뜨도록 변경해야함*/}
-                    <TouchableOpacity style={styles.userBtn}>
-                        <Text style={styles.userBtnTxt}>Edit</Text>
+                    {/*<Button title="Login" onPress={()=> navigation.navigate('LoginScreen')}/>*/}
+                    {/*새로 stack navigation 띄우는 것 안됨*/}
+                    <TouchableOpacity style={styles.userBtn} onPress={()=> navigation.navigate('LoginScreen')}>
+                        <Text style={styles.userBtnTxt}>Login</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.userBtn}>
-                        <Text style={styles.userBtnTxt}>Log out</Text>
+                        <Text style={styles.userBtnTxt}>Share</Text>
                     </TouchableOpacity>
                 </View>
                 {/*  부가정보  */}
@@ -34,17 +42,11 @@ const MyPageScreen = ({navigation}) => {
 
             </ScrollView>
         // </SafeAreaView>
-    )
+    );
 }
 
 export default MyPageScreen;
-// {
-//   // return (
-//   //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//   //     <Text>마이 페이지 작업</Text>
-//   //   </View>
-//   // );
-// }
+
 
 //사용할 스타일
 const styles = StyleSheet.create({
