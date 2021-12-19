@@ -6,6 +6,9 @@ import DeleteAll from '../public/icons8-delete-list-48.png';
 import ThemeChanger from '../public/day-and-night.png';
 import Search from '../public/search.png';
 import More from '../public/more.png';
+import addImage from '../public/image.png';
+import location from '../public/location.png';
+import cancel from '../public/cancel.png';
 
 export const images = {
     uncompleted: UncheckedBox,
@@ -16,4 +19,7 @@ export const images = {
     themeChange: ThemeChanger,
     search: Search,
     more: More,
+    addImage: addImage,
+    location: location,
+    cancel: cancel,
 };

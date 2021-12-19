@@ -191,9 +191,14 @@ export default function HomeScreen() {
         align-items: center;
         /* 모달창 크기 조절 */
         width: 320px;
-        height: 220px;
+        height: 500px;
         background-color: ${({theme}) => theme.background};
         border-radius: 10px;
+    `;
+    const ModalButtionContainer = styled.View`
+        flex-direction: row;
+        align-items: center;
+        background-color: ${({theme}) => theme.background};
     `;
     const StyledModalButton = styled.TouchableOpacity`
         /* Modal Button들의 모달창 내의 높이를 균일하게 하기 위하여 flex를 줌 */
@@ -345,10 +350,18 @@ export default function HomeScreen() {
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <StyledModalContainer>
           <StyledModalGradeWrapper>
-            <StyledModalGradeText>Add Comment</StyledModalGradeText>
+            <StyledModalGradeText>Add Comments</StyledModalGradeText>
           </StyledModalGradeWrapper>
           <HorizentalLine />
-          <StyledAddCommentModal/>
+          <StyledAddCommentModal
+          placeholder="add comments to your task..."/>
+          <HorizentalLine />
+          <ModalButtionContainer>
+          <IconButton type = {images.location}/>
+          <IconButton type = {images.addImage}/>
+          {/*<IconButton type = {images.cancel}/>
+          cancel 버튼 만들어봤는데 둘 중에 하나 선택하시면 될 것 같아요*/}
+          </ModalButtionContainer>
           <HorizentalLine />
           <StyledModalButton
             onPress={() => {
